@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SmartWorld - Play & Earn (Demo)</title>
+  <meta name="theme-color" content="#004aad"/>
+  <style>
+    :root{
+      --blue:#004aad; --accent:#0073ff; --card:#fff;
+      --bg1:#89f7fe; --bg2:#66a6ff;
+      --maxw:980px;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family:Inter, system-ui, Arial; margin:0; color:#222;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      display:flex; justify-content:center; padding:20px;
+    }
+    .wrap{width:100%; max-width:var(--maxw);}
+    header{background:var(--blue); color:#fff; padding:18px; border-radius:10px; text-align:center; font-size:20px; font-weight:700;}
+    nav{display:flex; gap:10px; justify-content:center; padding:12px 0;}
+    nav button{background:transparent;border:1px solid rgba(255,255,255,0.15); color:#fff; padding:8px 12px; border-radius:8px;cursor:pointer;}
+    section{margin-top:18px;}
+    .grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+    .card{background:var(--card); padding:14px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+    .center{text-align:center}
+    button.primary{background:var(--blue); color:#fff; border:none; padding:10px 12px; border-radius:10px; cursor:pointer;}
+    input,textarea,select{width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; margin-top:8px;}
+    .small{font-size:13px;color:#555}
+    footer{margin-top:16px; text-align:center; color:#034;}
+    .points{font-weight:800;color:var(--blue); font-size:18px}
+    a.offerlink{display:inline-block;margin-top:8px;padding:8px 10px;background:#0073ff;color:#fff;border-radius:8px;text-decoration:none}
+    .hint{font-size:13px;color:#666;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>🌍 SmartWorld — Play, Complete Offers & Earn Points</header>
+
+    <nav>
+      <button onclick="show('home')">Home</button>
+      <button onclick="show('games')">Games</button>
+      <button onclick="show('offers')">Offers</button>
+      <button onclick="show('wallet')">Wallet</button>
+      <button onclick="show('contact')">Contact</button>
+    </nav>
+
+    <!-- HOME -->
+    <section id="home" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <h2 style="margin:0">Welcome, <span id="usernameShow">Guest</span> 👋</h2>
+          <p class="small">Play quick games and complete offers to earn points. Points are stored locally (demo) — later we will connect real tracking & payouts.</p>
+        </div>
+        <div class="center">
+          <div class="points">Points: <span id="points">0</span></div>
+          <div class="hint">Minimum payout (set later) 10,000 pts</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAMES -->
+    <section id="games" style="display:none" class="card">
+      <h3>🎮 Games (each win or completion gives points)</h3>
+      <div class="grid">
+        <div class="card">
+          <h4>Rock Paper Scissors</h4>
+          <div id="rpsArea" class="center">
+            <button onclick="playRPS('rock')">Rock</button>
+            <button onclick="playRPS('paper')">Paper</button>
+            <button onclick="playRPS('scissors')">Scissors</button>
+            <p id="rpsResult" class="small"></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>Guess Number (1-5)</h4>
+          <input id="guessInput" type="number" min="1" max="5" placeholder="Type 1-5"/>
+          <button class="primary" onclick="guessNumber()">Guess</button>
+          <p id="guessRes" class="small"></p>
+        </div>
+
+        <div class="card">
+          <h4>Click Challenge</h4>
+          <button onclick="clickGame()">Click me fast</button>
+          <p id="clickC" class="small">Clicks: 0</p>
+        </div>
+
+        <div class="card">
+          <h4>Quick Quiz</h4>
+          <p class="small">What is capital of Pakistan?</p>
+          <button onclick="quizAnswer('Islamabad')">Islamabad</button>
+          <button onclick="quizAnswer('Karachi')">Karachi</button>
+          <button onclick="quizAnswer('Lahore')">Lahore</button>
+          <p id="quizR" class="small"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFERS -->
+    <section id="offers" style="display:none" class="card">
+      <h3>🤑 Offers — real earning when you replace links with affiliate/CPA links</h3>
+      <p class="small">NOTE: For real earning replace placeholder links (below) with your CPA/offer links from networks like CPAlead, OGAds, AdGem, etc.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Visit Partner Site</h4>
+          <p class="small">Open partner page and come back to claim points.</p>
+          <!-- REPLACE HREF with real affiliate link -->
+          <a class="offerlink" href="https://example.com" target="_blank" onclick="offerClicked(10)">Open & Earn 10 pts</a>
+          <div class="hint">Replace example.com with YOUR affiliate tracking URL.</div>
+        </div>
+
+        <div class="card">
+          <h4>Watch Promo Video</h4>
+          <p class="small">Watch a short video — then come back to claim.</p>
+          <a class="offerlink" href="https://www.youtube.com" target="_blank" onclick="offerClicked(10)">Watch & Earn 10 pts</a>
+        </div>
+
+        <div class="card">
+          <h4>Install Partner App</h4>
+          <p class="small">Install app from link (use offer link from CPA networks)</p>
+          <a class="offerlink" href="https://example.com" target="_blank" onclick="offerClicked(20)">Install & Earn 20 pts</a>
+        </div>
+
+        <div class="card">
+          <h4>Subscribe</h4>
+          <p class="small">Subscribe to our channel for bonus points.</p>
+          <a class="offerlink" href="https://youtube.com" target="_blank" onclick="offerClicked(10)">Subscribe & Earn 10 pts</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WALLET / REDEEM -->
+    <section id="wallet" style="display:none" class="card">
+      <h3>💳 Wallet & Redeem</h3>
+      <p class="small">Your points are saved in your browser. When you reach minimum (10,000 pts in demo), fill withdraw form below.</p>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px" class="card">
+          <h4>Your Info</h4>
+          <p class="small">Logged in as: <span id="uinfo">Guest</span></p>
+          <p class="small">Points: <strong id="walletPoints">0</strong></p>
+          <button onclick="copyLink()" class="primary">Copy My Referral Link</button>
+          <p class="small" id="copiedMsg" style="color:green;display:none">Copied!</p>
+        </div>
+
+        <div style="flex:1;min-width:260px" class="card">
+          <h4>Withdraw / Request Payout</h4>
+          <form id="withdrawForm" onsubmit="submitWithdraw(event)">
+            <input id="wname" placeholder="Your name" required/>
+            <input id="wacc" placeholder="Easypaisa/JazzCash number" required/>
+            <input id="wpoints" readonly/>
+            <textarea id="wmsg" placeholder="Note (optional)"></textarea>
+            <button type="submit" class="primary">Submit withdraw request</button>
+            <p class="small">Note: This demo site stores data locally. You will receive manual payout after verification (later we automate).</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="display:none" class="card">
+      <h3>📩 Contact & Payout Form</h3>
+      <p class="small">Use this form to send withdraw requests or messages.</p>
+      <form action="https://formspree.io/f/xzzjnwav" method="POST">
+        <input name="name" id="cname" placeholder="Your name" required/>
+        <input name="account" id="cacc" placeholder="EasyPaisa / JazzCash / Bank" required/>
+        <input name="points" id="cpoints" readonly/>
+        <textarea name="message" id="cmessage" placeholder="Message (e.g. payout request)"></textarea>
+        <button type="submit" class="primary">Send Request</button>
+      </form>
+      <p class="small">We will reply to your email. This form uses Formspree (free).</p>
+    </section>
+
+    <footer class="small">SmartWorld demo — replace offer links with CPA/affiliate tracking links for real earnings.</footer>
+  </div>
+
+<script>
+  // --- Simple local storage based user & points (demo) ---
+  const storageKey = 'smartworld_user';
+  const storagePoints = 'smartworld_points';
+
+  function loadState(){
+    let u = localStorage.getItem(storageKey);
+    if(!u){
+      const guest = {name: 'Guest', id: 'g'+Date.now()};
+      localStorage.setItem(storageKey, JSON.stringify(guest));
+    }
+    let pts = parseInt(localStorage.getItem(storagePoints) || '0', 10);
+    document.getElementById('points').innerText = pts;
+    document.getElementById('walletPoints').innerText = pts;
+    document.getElementById('cpoints').value = 'Points: ' + pts;
+    let user = JSON.parse(localStorage.getItem(storageKey));
+    document.getElementById('usernameShow').innerText = user.name;
+    document.getElementById('uinfo').innerText = user.name;
+    document.getElementById('wpoints').value = 'Points: ' + pts;
+    document.getElementById('cname').value = user.name === 'Guest' ? '' : user.name;
+    document.getElementById('cacc').value = '';
+  }
+
+  function savePoints(n){
+    let pts = parseInt(localStorage.getItem(storagePoints) || '0',10);
+    pts = pts + (n||0);
+    localStorage.setItem(storagePoints, pts);
+    loadState();
+  }
+
+  // expose simple addPoints used by earlier code
+  function addPoints(n){
+    savePoints(n);
+    alert('You earned +'+n+' points');
+  }
+
+  // simple offerClicked wrapper: for real use replace href with CPA link and remove manual add if you rely on network callbacks
+  function offerClicked(n){
+    // small delay to allow user to open the link
+    setTimeout(()=> addPoints(n||10), 300);
+  }
+
+  // games
+  function playRPS(choice){
+    const opts = ['rock','paper','scissors'];
+    const rand = opts[Math.floor(Math.random()*3)];
+    let res='Draw';
+    if(choice===rand) res='Draw';
+    else if((choice==='rock' && rand==='scissors') || (choice==='paper' && rand==='rock') || (choice==='scissors' && rand==='paper')){
+      res = 'You win! +5 pts';
+      savePoints(5);
+    } else res='You lose';
+    document.getElementById('rpsResult').innerText = res;
+  }
+
+  function guessNumber(){
+    const real = Math.floor(Math.random()*5)+1;
+    const g = parseInt(document.getElementById('guessInput').value,10);
+    if(g===real){ document.getElementById('guessRes').innerText='Correct! +5 pts'; savePoints(5)}
+    else document.getElementById('guessRes').innerText='Wrong. Number was '+real;
+  }
+
+  let clickCount=0;
+  function clickGame(){
+    clickCount++; document.getElementById('clickC').innerText='Clicks: '+clickCount;
+    if(clickCount>=10){ savePoints(5); alert('Nice! +5 pts'); clickCount=0; document.getElementById('clickC').innerText='Clicks: 0';}
+  }
+
+  function quizAnswer(ans){
+    if(ans==='Islamabad'){ document.getElementById('quizR').innerText='Correct! +5 pts'; savePoints(5); }
+    else document.getElementById('quizR').innerText='Wrong'; 
+  }
+
+  // withdraw form demo
+  function submitWithdraw(e){
+    e.preventDefault();
+    const pts = parseInt(localStorage.getItem(storagePoints)||'0',10);
+    if(pts < 10000){
+      alert('Minimum for demo withdraw is 10,000 points. You have: '+pts);
+      return;
+    }
+    // collect fields
+    const name=document.getElementById('wname').value;
+    const acc=document.getElementById('wacc').value;
+    const msg=document.getElementById('wmsg').value;
+    // send via Formspree recommended: but here we show example
+    alert('Withdraw request submitted. You will be contacted. (This demo requires manual processing.)');
+    // reset points (demo) - comment out if you want to keep points
+    // localStorage.setItem(storagePoints, '0');
+    loadState();
+  }
+
+  // copy referral link
+  function copyLink(){
+    const user = JSON.parse(localStorage.getItem(storageKey));
+    const link = location.href + '?ref=' + user.id;
+    navigator.clipboard?.writeText(link).then(()=> {
+      document.getElementById('copiedMsg').style.display='block';
+      setTimeout(()=> document.getElementById('copiedMsg').style.display='none',2000);
+    }).catch(()=> alert('Copy not supported'));
+  }
+
+  // navigation
+  function show(id){
+    ['home','games','offers','wallet','contact'].forEach(x=> document.getElementById(x).style.display = (x===id? 'block':'none') );
+    window.scrollTo(0,0);
+  }
+
+  // initial load
+  loadState();
+
+  // handle referral param to show welcome or add small bonus (demo)
+  (function(){
+    const url = new URL(location.href);
+    if(url.searchParams.get('ref')){
+      // small bonus for referral view (demo)
+      // do not auto-add points here to avoid abuse
+      console.log('Referral visit: ', url.searchParams.get('ref'));
+    }
+  })();
+</script>
+</body>
+</html>
